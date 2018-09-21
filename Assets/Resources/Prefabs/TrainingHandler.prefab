@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1836406646281834}
+  m_IsPrefabParent: 1
+--- !u!1 &1836406646281834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4545678961292118}
+  - component: {fileID: 114518926081450720}
+  - component: {fileID: 114679189827289638}
+  - component: {fileID: 114852820294494266}
+  m_Layer: 0
+  m_Name: TrainingHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4545678961292118
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836406646281834}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114518926081450720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836406646281834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8c8746a1833674c9b84baa88a893e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _finishedTrainingEvent: {fileID: 11400000, guid: cdce5a3d2a206ef4e9429013ba64a366,
+    type: 2}
+  _changeOptimalUserSpeedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: cf0d9abac7b30a14ca42e948f324070c, type: 2}
+        m_MethodName: Set
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 382d6a049c719674289e2a2bac299695, type: 2}
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityFloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  _enduranceSpeed: {fileID: 11400000, guid: b49f3088e3c3f9e4dafd51ce6914e342, type: 2}
+  _sprintSpeed: {fileID: 11400000, guid: e0d25fac530828943af21ed0d6cd0c7a, type: 2}
+  _fractionSpeed: {fileID: 11400000, guid: 10bd1b75d7f3d4648b71aa645dc16eaa, type: 2}
+  _restSpeed: {fileID: 11400000, guid: 45812119dcdc84341ae1d622d5336134, type: 2}
+  DEBUG_LOL: 0
+--- !u!114 &114679189827289638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836406646281834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f07a7ad9d928e47a1e54725c671a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: cfb0205e320c61847b6b0d5f79a15ff0, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114852820294494266}
+        m_MethodName: React
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114852820294494266
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836406646281834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee63d302f22f58c4eaf5774d0dbdeaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBeforeReaction: 0.5
+  _event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114518926081450720}
+        m_MethodName: AcquireTraining
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: '{"success":true,"message":"OK","data":{"description":"23/05/2018","_id":"5b0578c7788c8b543458b949","name":"Delivery","sequences":[{"_id":"5b0578c7788c8b543458b94c","type":2,"totalLength":30,"effortLength":0,"restLength":0,"iteration":0},{"_id":"5b0578c7788c8b543458b94b","type":1,"totalLength":1,"effortLength":0,"restLength":0,"iteration":0},{"_id":"5b0578c7788c8b543458b94a","type":3,"totalLength":22,"effortLength":1,"restLength":10,"iteration":2},{"_id":"5b057a3c788c8b543458b94f","type":1,"totalLength":1,"effortLength":0,"restLength":0,"iteration":0}],"createdAt":"2018-05-23T14:20:55.863Z","updatedAt":"2018-05-23T14:27:08.245Z","__v":0}}'
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114518926081450720}
+        m_MethodName: StartTraining
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
