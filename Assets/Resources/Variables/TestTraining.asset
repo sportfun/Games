@@ -11,3 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ec1b37eb3579d48862bd3405117594, type: 3}
   m_Name: TestTraining
   m_EditorClassIdentifier: 
+  Text: '{     "success": true,     "message": "OK",     "data": {         "description":
+    "23/05/2018",         "_id": "5b0578c7788c8b543458b949",         "name": "Delivery",         "sequences":
+    [             {                 "_id": "5b0578c7788c8b543458b94c",                 "type":
+    2,                 "totalLength": 30,                 "effortLength": 0,                 "restLength":
+    0,                 "iteration": 0             },             {                 "_id":
+    "5b0578c7788c8b543458b94b",                 "type": 1,                 "totalLength":
+    1,                 "effortLength": 0,                 "restLength": 0,                 "iteration":
+    0             },             {                 "_id": "5b0578c7788c8b543458b94a",                 "type":
+    3,                 "totalLength": 22,                 "effortLength": 1,                 "restLength":
+    10,                 "iteration": 2             },             {                 "_id":
+    "5b057a3c788c8b543458b94f",                 "type": 1,                 "totalLength":
+    1,                 "effortLength": 0,                 "restLength": 0,                 "iteration":
+    0             }         ],         "createdAt": "2018-05-23T14:20:55.863Z",         "updatedAt":
+    "2018-05-23T14:27:08.245Z",         "__v": 0     } } '
