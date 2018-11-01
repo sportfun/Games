@@ -27,8 +27,8 @@ public class ChooseProgram : MonoBehaviour {
 
 		this._trainings = GetComponent<GetTraining>().GetLoadedTrainings();
 		//Debug.Log(this._trainings[GetComponentInChildren<Dropdown>().value]);
-		this._training.Value = this._trainings[GetComponentInChildren<Dropdown>().value];
-		this._training.Text = this._trainings[GetComponentInChildren<Dropdown>().value].ToString();
+		this._training.Value = this._trainings[GetComponentInChildren<TMPro.TMP_Dropdown>().value];
+		this._training.Text = this._trainings[GetComponentInChildren<TMPro.TMP_Dropdown>().value].ToString();
 		// save the sport program
 		// and stock it somewhere
 	}

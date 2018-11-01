@@ -14,8 +14,8 @@ public class GetTraining : MonoBehaviour
     private Newtonsoft.Json.Linq.JObject    _training;
     private List<Newtonsoft.Json.Linq.JObject>  _loadedTrainings;
 
-    private Dropdown  _optionsDatas;
-    private List<Dropdown.OptionData>   _optionsDataList;
+    private TMPro.TMP_Dropdown  _optionsDatas;
+    private List<TMPro.TMP_Dropdown.OptionData>   _optionsDataList;
 
 
 
@@ -30,8 +30,8 @@ public class GetTraining : MonoBehaviour
         this._routes.Add("server", "http://149.202.41.22:8080");
         this._routes.Add("user", "/api/user/");
         this._routes.Add("trainingId", "/api/training/");
-        this._optionsDataList = new List<Dropdown.OptionData>();
-        this._optionsDatas = this.gameObject.GetComponentInChildren<Dropdown>();
+        this._optionsDataList = new List<TMPro.TMP_Dropdown.OptionData>();
+        this._optionsDatas = this.gameObject.GetComponentInChildren<TMPro.TMP_Dropdown>();
         this._optionsDatas.options.RemoveRange(0, 3);
         this._optionsDatas.AddOptions(this._optionsDataList);
     }
@@ -76,9 +76,9 @@ public class GetTraining : MonoBehaviour
         {
             this._training = Newtonsoft.Json.Linq.JObject.Parse(www.text);
             this._loadedTrainings.Add(this._training);
-            List<Dropdown.OptionData> item = new List<Dropdown.OptionData>();
+            List<TMPro.TMP_Dropdown.OptionData> item = new List<TMPro.TMP_Dropdown.OptionData>();
             Debug.Log(this._training["data"]);
-            item.Add(new Dropdown.OptionData((string)(this._training["data"]["description"])));
+            item.Add(new TMPro.TMP_Dropdown.OptionData((string)(this._training["data"]["description"])));
             this._optionsDatas.AddOptions(item);
             this._optionsDatas.RefreshShownValue();
         }

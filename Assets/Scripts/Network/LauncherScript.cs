@@ -14,6 +14,7 @@ public class LauncherScript : MonoBehaviour
     [SerializeField] private TMPro.TMP_InputField  _login;
     [SerializeField] private TMPro.TMP_InputField  _password;
     [SerializeField] private Canvas _trainningsCanvas;
+    [SerializeField] private ReactionUnityEvent _onSuccessReaction;
 
     private Text login;
     void Start()
@@ -51,7 +52,10 @@ public class LauncherScript : MonoBehaviour
         this._token = data.text;
         this._saveToken.token = data.text;
         this._trainningsCanvas.gameObject.SetActive(true);
-        this.gameObject.SetActive(false);
+        if (this._onSuccessReaction != null)
+            this._onSuccessReaction.React();
+        else
+            this.gameObject.SetActive(false);
     }
 }
 
