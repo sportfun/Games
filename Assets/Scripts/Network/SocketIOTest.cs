@@ -31,6 +31,7 @@ public class SocketIOTest : MonoBehaviour
         {
             this._socket = IO.Socket(this._serverURL);
             this._socket.On(Socket.EVENT_CONNECT, (msg) => {
+                StartSession();
                 Debug.Log("+ Socket.IO connected: " + msg);
             });
             this._socket.On(Socket.EVENT_CONNECT_ERROR, (msg) => {
@@ -92,40 +93,38 @@ public class SocketIOTest : MonoBehaviour
 
     public void StartSession()
     {
+        Newtonsoft.Json.Linq.JObject jobject;
         ConnectInfo link =  new ConnectInfo();
+        ConnectInfo start_game = new ConnectInfo();
+
         link.setType("game");
         link.setLink("totor-la-petite-voiture");
         link.setBody(new Dictionary<string, string>());
         link.getBody().Add("command", "link");
         string linkJson = Newtonsoft.Json.JsonConvert.SerializeObject(link);
         this._socket.Emit("command", linkJson);
-        Debug.Log(linkJson);
 
-        ConnectInfo start_game =  new ConnectInfo();
         start_game.setType("game");
         start_game.setLink("totor-la-petite-voiture");
         start_game.setBody(new Dictionary<string, string>());
         start_game.getBody().Add("command", "start_game");
+
         string start_gameJson = Newtonsoft.Json.JsonConvert.SerializeObject(start_game);
-        this._socket.Emit("command", start_gameJson);
-        Debug.Log(start_gameJson);
+        jobject = Newtonsoft.Json.Linq.JObject.Parse(start_gameJson);
+        this._socket.Emit("command", jobject);
     }
 
     public void EndSession()
     {
         ConnectInfo stop_game =  new ConnectInfo();
+        Newtonsoft.Json.Linq.JObject jobject;
+
         stop_game.setType("game");
         stop_game.setLink("totor-la-petite-voiture");
         stop_game.setBody(new Dictionary<string, string>());
-        stop_game.getBody().Add("command", "stop_game");
+        stop_game.getBody().Add("command", "end_game");
         string stop_gameJson = Newtonsoft.Json.JsonConvert.SerializeObject(stop_game);
-        this._socket.Emit("command", stop_gameJson);
-        Debug.Log(stop_gameJson);
-        //this._socket.Emit("command", "{ \"type\": \"game\", \"link_id\": \"video_game_1\", \"body\": { \"command\": \"end_session\" }}");
-    }
-
-    public void NewLink()
-    {
-        //this._socket.Emit("command", "{ \"type\": \"game\", \"link_id\": \"video_game_1\", \"body\": { \"command\": \"new_link\" }}");
+        jobject = Newtonsoft.Json.Linq.JObject.Parse(stop_gameJson);
+        this._socket.Emit("command", jobject);
     }
 }

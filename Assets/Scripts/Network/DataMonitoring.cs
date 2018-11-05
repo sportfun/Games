@@ -88,11 +88,12 @@ public class DataMonitoring : MonoBehaviour {
         yield return data;
         if (data.error != null)
         {
-            Debug.Log("There was an error sending request: " + data.ToString());
+            Debug.Log("There was an error sending request end session data: " + data.ToString());
         }
         else
         {
             this.SendData(data);
+            Debug.Log("Sent");
         }
     }
 
@@ -100,4 +101,5 @@ public class DataMonitoring : MonoBehaviour {
 	{
 		this.GetUserData();
 	}
+
 }
