@@ -3432,7 +3432,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 216602807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 564619389}
@@ -5073,8 +5073,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 216602808}
-  _distance: 5
-  _height: 2
+  _distance: 1
+  _height: 0.4
   _heightDamping: 2
   _rotationDamping: 3
 --- !u!1 &334575003
@@ -9539,17 +9539,17 @@ Prefab:
     - target: {fileID: 224269817948788112, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224269817948788112, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224269817948788112, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224269817948788112, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
@@ -9559,17 +9559,17 @@ Prefab:
     - target: {fileID: 224731800093139282, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224731800093139282, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224731800093139282, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224731800093139282, guid: c4bf912fce887834f96a4bfb443094d9,
         type: 2}
@@ -9579,6 +9579,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c4bf912fce887834f96a4bfb443094d9, type: 2}
   m_IsPrefabParent: 0
+--- !u!223 &638180267 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 223658888193712428, guid: c4bf912fce887834f96a4bfb443094d9,
+    type: 2}
+  m_PrefabInternal: {fileID: 638180266}
 --- !u!1 &640313611
 GameObject:
   m_ObjectHideFlags: 0
@@ -23727,6 +23732,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onAwakeEvent: {fileID: 11400000, guid: 66aa29382a6afdc499104f19bf98bc00, type: 2}
+  _onAvakeUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 638180267}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1831885510
 GameObject:
   m_ObjectHideFlags: 0

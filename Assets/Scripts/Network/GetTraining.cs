@@ -32,7 +32,7 @@ public class GetTraining : MonoBehaviour
         this._routes.Add("trainingId", "/api/training/");
         this._optionsDataList = new List<TMPro.TMP_Dropdown.OptionData>();
         this._optionsDatas = this.gameObject.GetComponentInChildren<TMPro.TMP_Dropdown>();
-        this._optionsDatas.options.RemoveRange(0, 3);
+        this._optionsDatas.ClearOptions();
         this._optionsDatas.AddOptions(this._optionsDataList);
     }
 
@@ -50,7 +50,8 @@ public class GetTraining : MonoBehaviour
     IEnumerator WaitForRequest(WWW www)
     {
         yield return www;
-        
+        this._optionsDatas.ClearOptions();
+
         if (www.error == null)
          {
             Newtonsoft.Json.Linq.JObject userDatas = Newtonsoft.Json.Linq.JObject.Parse(www.text);
