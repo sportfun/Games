@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using SportfunCommand = System.Collections.Generic.Dictionary<string, string>;
 
 public class SocketIO : MonoBehaviour
 {
+    [Serializable]
+    public class SocketIOEvent : UnityEvent<string, object>
+    {
+    }
+
     #region Unity Editor Fields
 
-    [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
+    [Header("Settings")] [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
     [SerializeField] private string _linkId = "totor-la-petite-voiture";
 
     [SerializeField] private FloatVariable _speed;
     [SerializeField] private FloatVariable _input;
-    [SerializeField] private GameEvent _gameEvent;
+
+    [Header("Events")] [SerializeField] private SocketIOEvent _onConnection = new SocketIOEvent();
+    [SerializeField] private SocketIOEvent _onDisconnection = new SocketIOEvent();
+    [SerializeField] private SocketIOEvent _onReconnection = new SocketIOEvent();
 
     #endregion
 
@@ -43,8 +53,6 @@ public class SocketIO : MonoBehaviour
             // Default handlers
             {Socket.EVENT_CONNECT_ERROR, o => Debug.LogError($"Socket.io: error connecting: {o}")},
             {Socket.EVENT_CONNECT_TIMEOUT, o => Debug.LogError($"Socket.io: timeout connecting: {o}")},
-            {Socket.EVENT_DISCONNECT, o => Debug.LogError("Socket.io: disconnected")},
-            {Socket.EVENT_RECONNECT, o => Debug.LogError($"Socket.io: reconnect: {o}")},
             {Socket.EVENT_RECONNECTING, o => Debug.LogError($"Socket.io: reconnecting: {o}")},
             {Socket.EVENT_RECONNECT_ATTEMPT, o => Debug.LogError($"Socket.io: reconnect attempt: {o}")},
             {Socket.EVENT_RECONNECT_ERROR, o => Debug.LogError($"Socket.io: reconnect error: {o}")},
@@ -55,6 +63,8 @@ public class SocketIO : MonoBehaviour
 
             // Custom handlers
             {Socket.EVENT_CONNECT, OnConnectionHandler},
+            {Socket.EVENT_DISCONNECT, OnDisconnectionHandler},
+            {Socket.EVENT_RECONNECT, OnReconnectionHandler},
             {"data", OnDataHandler}
         };
 
@@ -94,11 +104,25 @@ public class SocketIO : MonoBehaviour
 
     #region Socket.io handlers
 
-    private void OnConnectionHandler(object _)
+    private void OnConnectionHandler(object o)
     {
         Debug.LogWarning("Socket.io: new connection");
+        _onConnection.Invoke(Socket.EVENT_CONNECT, o);
+
         Emit(LinkCommand);
         StartSession();
+    }
+
+    private void OnDisconnectionHandler(object o)
+    {
+        Debug.LogError("Socket.io: disconnected");
+        _onDisconnection.Invoke(Socket.EVENT_DISCONNECT, o);
+    }
+
+    private void OnReconnectionHandler(object o)
+    {
+        Debug.LogWarning("Socket.io: reconnection");
+        _onReconnection.Invoke(Socket.EVENT_RECONNECT, o);
     }
 
     private void OnDataHandler(object message)
