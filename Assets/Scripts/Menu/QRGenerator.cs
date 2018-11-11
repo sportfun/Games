@@ -2,13 +2,16 @@
 using UnityEngine.UI;
 using ZXing;
 using ZXing.QrCode;
+using System;
 
 public class QRGenerator : MonoBehaviour
 {
     [SerializeField] private Rect _rect;
     [SerializeField] private Image _qrImage;
+    [SerializeField] private string _preGuidCode = "sportsfun";
 
-    public string Text { get; set; }
+    public string Text { get; private set; }
+    public Guid CurrentGuid { get; private set; }
 
     private static Color32[] Encode(string textForEncoding, int width, int height)
     {
@@ -35,6 +38,10 @@ public class QRGenerator : MonoBehaviour
 
     public void GenerateDisplayQR()
     {
+        this.CurrentGuid = Guid.NewGuid();
+        this.Text = this._preGuidCode + ":" + this.CurrentGuid.ToString();
         this._qrImage.sprite = Sprite.Create(this.generateQR(this.Text), this._rect, Vector2.zero);
+
+        // TODO: Register GUID with the server before displaying it in case the QR Code is already in use (very low chance but whatever)
     }
 }
