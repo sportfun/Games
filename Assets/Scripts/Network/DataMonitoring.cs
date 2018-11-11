@@ -7,6 +7,7 @@ public class DataMonitoring : MonoBehaviour {
 	[SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private TextMeshProUGUI _time;
     [SerializeField] private int    _GameID = 0;
+    [SerializeField] private IntVariable _score;
 	private string	_userRoute = "/api/user";
     private string _activityRoute = "/api/activity";
 	private Dictionary<string, string>	_keyword;
@@ -75,7 +76,7 @@ public class DataMonitoring : MonoBehaviour {
             time =  Mathf.RoundToInt(this._time.GetComponent<TimerUI>().GetTime());
             trainingType = this._dataSaver.GetChoosenTraining()["data"]["sequences"][0]["type"].ToString();
             userID = userData["data"]["_id"].ToString();
-            jsonStr = "{\"user\":\""+ userID  + "\", \"game\":" + this._GameID +", \"type\":" + trainingType + ", \"timeSpent\":" + time + "}";
+            jsonStr = "{\"user\":\""+ userID  + "\", \"game\":" + this._GameID +", \"type\":" + trainingType + ", \"timeSpent\":" + time +  ", \"score\":" + this._score.Value + "}";
             formatData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
             www = new WWW(this._server + this._activityRoute, formatData, postHeader);
             StartCoroutine(SendDataRequestReturn(www));

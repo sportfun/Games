@@ -16,4 +16,9 @@ public class ScoreDisplay : MonoBehaviour
     {
         this._scoreText.SetText(this._scoreVariable.Value.ToString());
     }
+
+    public IntVariable getScore()
+    {
+        return (this._scoreVariable);
+    }
 }
