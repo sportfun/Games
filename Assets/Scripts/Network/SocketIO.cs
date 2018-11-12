@@ -21,17 +21,16 @@ public class SocketIO : MonoBehaviour
 
     #region Unity Editor Fields
 
-    [Header("Settings")] [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
+    [Header("Settings")] 
+    [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
     [SerializeField] private string _linkId = "totor-la-petite-voiture";
+    [SerializeField] private float _msBeforeUpdate = 0.1f;
 
     [Header("Input Events")]
-    [SerializeField]
-    private SocketIoDataEvent _onDataReceivedEvent = new SocketIoDataEvent();
+    [SerializeField] private SocketIoDataEvent _onDataReceivedEvent = new SocketIoDataEvent();
 
     [Header("Socket Events")]
-    [SerializeField]
-    private SocketIoEvent _onConnectionEvent = new SocketIoEvent();
-
+    [SerializeField] private SocketIoEvent _onConnectionEvent = new SocketIoEvent();
     [SerializeField] private SocketIoEvent _onDisconnectionEvent = new SocketIoEvent();
     [SerializeField] private SocketIoEvent _onReconnectionEvent = new SocketIoEvent();
 
@@ -45,6 +44,7 @@ public class SocketIO : MonoBehaviour
 
     #endregion
 
+    private float _msBeforeNextUpdate;
     private Socket _socket;
     private SocketState _state = SocketState.None;
     private readonly Queue<Tuple<string, object>> _dataQueue = new Queue<Tuple<string, object>>();
@@ -54,6 +54,11 @@ public class SocketIO : MonoBehaviour
 
     private void Update()
     {
+        _msBeforeNextUpdate -= Time.deltaTime;
+        if (_msBeforeNextUpdate > 0) return;
+
+        _msBeforeNextUpdate = _msBeforeUpdate;
+
         lock (_socket)
         {
             if (_state == SocketState.Connected) _onConnectionEvent.Invoke();
