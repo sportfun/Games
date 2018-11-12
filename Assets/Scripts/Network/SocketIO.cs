@@ -4,14 +4,19 @@ using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using SportfunCommand = System.Collections.Generic.Dictionary<string, string>;
 
 public class SocketIO : MonoBehaviour
 {
-    [Serializable]
-    public class SocketIOEvent : UnityEvent<string, object>
+    [Serializable] public class SocketIoEvent : UnityEvent {}
+    [Serializable] public class SocketIoDataEvent : UnityEvent<string, object> {}
+
+    private enum SocketState
     {
+        None,
+        Connected,
+        Disconnected,
+        Reconnecting
     }
 
     #region Unity Editor Fields
@@ -19,12 +24,16 @@ public class SocketIO : MonoBehaviour
     [Header("Settings")] [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
     [SerializeField] private string _linkId = "totor-la-petite-voiture";
 
-    [SerializeField] private FloatVariable _speed;
-    [SerializeField] private FloatVariable _input;
+    [Header("Input Events")]
+    [SerializeField]
+    private SocketIoDataEvent _onDataReceivedEvent = new SocketIoDataEvent();
 
-    [Header("Events")] [SerializeField] private SocketIOEvent _onConnection = new SocketIOEvent();
-    [SerializeField] private SocketIOEvent _onDisconnection = new SocketIOEvent();
-    [SerializeField] private SocketIOEvent _onReconnection = new SocketIOEvent();
+    [Header("Socket Events")]
+    [SerializeField]
+    private SocketIoEvent _onConnectionEvent = new SocketIoEvent();
+
+    [SerializeField] private SocketIoEvent _onDisconnectionEvent = new SocketIoEvent();
+    [SerializeField] private SocketIoEvent _onReconnectionEvent = new SocketIoEvent();
 
     #endregion
 
@@ -37,9 +46,30 @@ public class SocketIO : MonoBehaviour
     #endregion
 
     private Socket _socket;
-
+    private SocketState _state = SocketState.None;
+    private readonly Queue<Tuple<string, object>> _dataQueue = new Queue<Tuple<string, object>>();
+ 
     private void OnEnable() => Open();
     private void OnDisable() => Close();
+
+    private void Update()
+    {
+        lock (_socket)
+        {
+            if (_state == SocketState.Connected) _onConnectionEvent.Invoke();
+            if (_state == SocketState.Disconnected) _onDisconnectionEvent.Invoke();
+            if (_state == SocketState.Reconnecting) _onReconnectionEvent.Invoke();
+            _state = SocketState.None;
+        }
+
+        lock (_dataQueue)
+        {
+            if (_dataQueue.Count == 0) return;
+            foreach (var data in _dataQueue)
+                _onDataReceivedEvent.Invoke(data.Item1, data.Item2);
+            _dataQueue.Clear();
+        }
+    }
 
     #region Socket.io management
 
@@ -107,7 +137,7 @@ public class SocketIO : MonoBehaviour
     private void OnConnectionHandler(object o)
     {
         Debug.LogWarning("Socket.io: new connection");
-        _onConnection.Invoke(Socket.EVENT_CONNECT, o);
+        lock (_socket) { _state = SocketState.Connected; }
 
         Emit(LinkCommand);
         StartSession();
@@ -116,13 +146,13 @@ public class SocketIO : MonoBehaviour
     private void OnDisconnectionHandler(object o)
     {
         Debug.LogError("Socket.io: disconnected");
-        _onDisconnection.Invoke(Socket.EVENT_DISCONNECT, o);
+        lock (_socket) { _state = SocketState.Disconnected; }
     }
 
     private void OnReconnectionHandler(object o)
     {
         Debug.LogWarning("Socket.io: reconnection");
-        _onReconnection.Invoke(Socket.EVENT_RECONNECT, o);
+        lock (_socket) { _state = SocketState.Reconnecting; }
     }
 
     private void OnDataHandler(object message)
@@ -138,10 +168,12 @@ public class SocketIO : MonoBehaviour
         switch ((string) json["body"]["module"])
         {
             case "rpm":
-                _speed.Set((float) (json["body"]["value"] ?? 0));
-                break;
             case "controller":
-                _input.Set((float) (json["body"]["value"] ?? 0));
+                var module = (string) json["body"]["module"];
+                var value = json["body"]["value"] ?? -1;
+
+                lock (_dataQueue) { _dataQueue.Enqueue(new Tuple<string, object>(module, value)); }
+
                 break;
             case null:
                 Debug.LogError("Socket.io: module not defined");
