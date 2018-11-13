@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,11 +31,13 @@ public class InputManager : MonoBehaviour
         switch (module)
         {
             case "rpm":
-                _speedChangeEvent.Invoke(Mathf.Clamp((float) data, _minSpeed.Value, _maxSpeed.Value));
+                var speed = (data as JValue)?.ToObject<float>() ?? (float) data;
+                _speedChangeEvent.Invoke(Mathf.Clamp(speed, _minSpeed.Value, _maxSpeed.Value));
                 break;
             case "controller":
-                if ((int) data == _leftValue) _leftInputEvent.Invoke();
-                else if ((int) data == _rightValue) _rightInputEvent.Invoke();
+                var input = (data as JValue)?.ToObject<int>() ?? (int) data;
+                if (input == _leftValue) _leftInputEvent.Invoke();
+                else if (input == _rightValue) _rightInputEvent.Invoke();
                 break;
         }
     }
