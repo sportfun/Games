@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LauncherScript : MonoBehaviour
 {
-    [SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080/";
+    [SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private Token  _saveToken;
     private string  _loginRoute;
     private string  _jsonData;
