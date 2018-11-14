@@ -1347,7 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e5d4962e197204395b784995200aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _server: http://api.sportsfun.shr.ovh:8080/
+  _server: http://api.sportsfun.shr.ovh:8080
   _saveToken: {fileID: 11400000, guid: bad245c594e4e764681c7bff75df5dd1, type: 2}
   _login: {fileID: 806569904}
   _password: {fileID: 1309729322}
