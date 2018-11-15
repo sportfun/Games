@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,6 +68,12 @@ public class SpeedController : MonoBehaviour
         this._elapsedTime += Time.deltaTime;
     }
 
+    public void OnUserSpeedChange(float speed)
+    {
+        _userSpeedVariable.Set(speed);
+        OnUserSpeedChange();
+    }
+    
     public void OnUserSpeedChange()
     {
         float delta = this._userSpeedVariable.Value - this._userOptimalSpeedVariable.Value;
