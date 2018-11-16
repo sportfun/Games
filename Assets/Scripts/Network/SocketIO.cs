@@ -4,12 +4,12 @@ using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 using UnityEngine;
 using UnityEngine.Events;
-using SportfunCommand = System.Collections.Generic.Dictionary<string, string>;
+using SportfunCommand = System.Collections.Generic.Dictionary<string, object>;
 
 public class SocketIO : MonoBehaviour
 {
     [Serializable] public class SocketIoEvent : UnityEvent {}
-    [Serializable] public class SocketIoDataEvent : UnityEvent<string, object> {}
+    [Serializable] public class SocketIoReceivedEvent : UnityEvent<string, JObject> {}
 
     private enum SocketState
     {
@@ -26,8 +26,9 @@ public class SocketIO : MonoBehaviour
     [SerializeField] private string _linkId = "totor-la-petite-voiture";
     [SerializeField] private float _msBeforeUpdate = 0.1f;
 
-    [Header("Input Events")]
-    [SerializeField] private SocketIoDataEvent _onDataReceivedEvent = new SocketIoDataEvent();
+    [Header("Socket Callbacks")]
+    [SerializeField] private string[] _boundChannels = {"data", "qr"};
+    [SerializeField] private SocketIoReceivedEvent _onReceivedEvent = new SocketIoReceivedEvent();
 
     [Header("Socket Events")]
     [SerializeField] private SocketIoEvent _onConnectionEvent = new SocketIoEvent();
@@ -47,7 +48,7 @@ public class SocketIO : MonoBehaviour
     private float _msBeforeNextUpdate;
     private Socket _socket;
     private SocketState _state = SocketState.None;
-    private readonly Queue<Tuple<string, object>> _dataQueue = new Queue<Tuple<string, object>>();
+    private readonly Queue<Tuple<string, JObject>> _receptionQueue = new Queue<Tuple<string, JObject>>();
  
     private void OnEnable() => Open();
     private void OnDisable() => Close();
@@ -67,12 +68,12 @@ public class SocketIO : MonoBehaviour
             _state = SocketState.None;
         }
 
-        lock (_dataQueue)
+        lock (_receptionQueue)
         {
-            if (_dataQueue.Count == 0) return;
-            foreach (var data in _dataQueue)
-                _onDataReceivedEvent.Invoke(data.Item1, data.Item2);
-            _dataQueue.Clear();
+            if (_receptionQueue.Count == 0) return;
+            foreach (var data in _receptionQueue)
+                _onReceivedEvent.Invoke(data.Item1, data.Item2);
+            _receptionQueue.Clear();
         }
     }
 
@@ -100,11 +101,16 @@ public class SocketIO : MonoBehaviour
             {Socket.EVENT_CONNECT, OnConnectionHandler},
             {Socket.EVENT_DISCONNECT, OnDisconnectionHandler},
             {Socket.EVENT_RECONNECT, OnReconnectionHandler},
-            {"data", OnDataHandler}
         };
 
         foreach (var handler in handlers)
             _socket.On(handler.Key, handler.Value);
+
+        foreach (var channel in _boundChannels)
+            if (handlers.ContainsKey(channel))
+                throw new Exception($"channel '{channel}' already used and can't be bound");
+            else
+                _socket.On(channel, o => OnReceptionHandler(channel, o));
     }
 
     private void Close()
@@ -115,6 +121,18 @@ public class SocketIO : MonoBehaviour
         _socket = null;
     }
 
+    public void Emit<T>(string channel, T value) where T : struct
+    {
+        _socket.Emit(channel, value);
+        Debug.Log($"Socket.io: emit '{value}' on '{channel}'");
+    }
+
+    public void Emit(string channel, JObject value)
+    {
+        _socket.Emit(channel, value);
+        Debug.Log($"Socket.io: emit '{value}' on '{channel}'");
+    }
+
     private void Emit(SportfunCommand command)
     {
         JObject wsPacket = new WebSocketPacket
@@ -123,9 +141,7 @@ public class SocketIO : MonoBehaviour
             LinkId = _linkId,
             Body = command
         };
-        _socket.Emit("command", wsPacket);
-
-        Debug.Log($"Socket.io: emit '({command["command"]})'");
+        Emit("command", wsPacket);
     }
 
     #endregion
@@ -160,32 +176,11 @@ public class SocketIO : MonoBehaviour
         lock (_socket) { _state = SocketState.Reconnecting; }
     }
 
-    private void OnDataHandler(object message)
+    private void OnReceptionHandler(string channel, object message)
     {
-        var json = message as JObject;
-        if (json?["body"]?["value"] == null)
+        lock (_receptionQueue)
         {
-            Debug.LogError($"Socket.io: received invalid data: {json ?? message}");
-            return;
-        }
-
-        Debug.Log($"Socket.io: data received: {json}");
-        switch ((string) json["body"]["module"])
-        {
-            case "rpm":
-            case "controller":
-                var module = (string) json["body"]["module"];
-                var value = json["body"]["value"] ?? -1;
-
-                lock (_dataQueue) { _dataQueue.Enqueue(new Tuple<string, object>(module, value)); }
-
-                break;
-            case null:
-                Debug.LogError("Socket.io: module not defined");
-                break;
-            default:
-                Debug.LogWarning($"Socket.io: unknown module '{json["body"]["module"]}'");
-                break;
+            _receptionQueue.Enqueue(new Tuple<string, JObject>(channel, message as JObject));
         }
     }
 
