@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
@@ -121,17 +121,9 @@ public class SocketIO : MonoBehaviour
         _socket = null;
     }
 
-    public void Emit<T>(string channel, T value) where T : struct
-    {
-        _socket.Emit(channel, value);
-        Debug.Log($"Socket.io: emit '{value}' on '{channel}'");
-    }
-
-    public void Emit(string channel, JObject value)
-    {
-        _socket.Emit(channel, value);
-        Debug.Log($"Socket.io: emit '{value}' on '{channel}'");
-    }
+    public void Emit<T>(string channel, T value) where T : struct => Emit(channel, (object) value);
+    public void Emit(string channel, string value) => Emit(channel, (object) value);
+    public void Emit(string channel, JObject value) => Emit(channel, (object) value);
 
     private void Emit(SportfunCommand command)
     {
@@ -142,6 +134,12 @@ public class SocketIO : MonoBehaviour
             Body = command
         };
         Emit("command", wsPacket);
+    }
+
+    private void Emit(string channel, object value)
+    {
+        _socket.Emit(channel, value);
+        Debug.Log($"Socket.io: emit '{value}' on '{channel}'");        
     }
 
     #endregion
