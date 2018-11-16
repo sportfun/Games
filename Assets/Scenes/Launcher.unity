@@ -160,6 +160,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f74fd0a55e3d6984ba542ce2229b7ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _socketIOComponent: {fileID: 0}
+  _socketIOChannel: qr
+  _token: {fileID: 0}
+  _trainningsCanvas: {fileID: 0}
+  _onSuccessReaction: {fileID: 0}
   _rect:
     serializedVersion: 2
     x: 0
@@ -167,6 +172,7 @@ MonoBehaviour:
     width: 512
     height: 512
   _qrImage: {fileID: 85784681}
+  _preGuidCode: sportsfun
 --- !u!114 &85784681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1577,7 +1583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &416400686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1779,6 +1785,106 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 548489629}
+--- !u!1 &567493495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 567493497}
+  - component: {fileID: 567493496}
+  m_Layer: 2
+  m_Name: Socket IO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!114 &567493496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 567493495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0d8cf19d06f74ba7bf887ccfa57f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameScene: 0
+  _serverUrl: http://api.sportsfun.shr.ovh:8080
+  _linkId: totor-la-petite-voiture
+  _msBeforeUpdate: 0.1
+  _boundChannels:
+  - data
+  - qr
+  _onReceivedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: OnSocketIOResponse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SocketIO+SocketIoReceivedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _onConnectionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: OnConnectionSocket
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SocketIO+SocketIoEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  _onDisconnectionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SocketIO+SocketIoEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  _onReconnectionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: OnReconnectionSocket
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SocketIO+SocketIoEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+--- !u!4 &567493497
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 567493495}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &576340221
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,6 +3919,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f74fd0a55e3d6984ba542ce2229b7ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _socketIOComponent: {fileID: 567493496}
+  _socketIOChannel: qr
+  _token: {fileID: 11400000, guid: bad245c594e4e764681c7bff75df5dd1, type: 2}
+  _trainningsCanvas: {fileID: 1285016865}
+  _onSuccessReaction: {fileID: 312415803}
   _rect:
     serializedVersion: 2
     x: 0
@@ -3820,6 +3931,7 @@ MonoBehaviour:
     width: 256
     height: 256
   _qrImage: {fileID: 1165455896}
+  _preGuidCode: sportsfun
 --- !u!1 &1184467091
 GameObject:
   m_ObjectHideFlags: 0

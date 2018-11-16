@@ -21,7 +21,8 @@ public class SocketIO : MonoBehaviour
 
     #region Unity Editor Fields
 
-    [Header("Settings")] 
+    [Header("Settings")]
+    [SerializeField] private bool _gameScene = true;
     [SerializeField] private string _serverUrl = "http://api.sportsfun.shr.ovh:8080/";
     [SerializeField] private string _linkId = "totor-la-petite-voiture";
     [SerializeField] private float _msBeforeUpdate = 0.1f;
@@ -158,8 +159,11 @@ public class SocketIO : MonoBehaviour
         Debug.LogWarning("Socket.io: new connection");
         lock (_socket) { _state = SocketState.Connected; }
 
-        Emit(LinkCommand);
-        StartSession();
+        if (this._gameScene)
+        {
+            Emit(LinkCommand);
+            StartSession();
+        }
     }
 
     private void OnDisconnectionHandler(object o)

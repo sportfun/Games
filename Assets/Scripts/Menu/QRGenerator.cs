@@ -3,15 +3,32 @@ using UnityEngine.UI;
 using ZXing;
 using ZXing.QrCode;
 using System;
+using Newtonsoft.Json.Linq;
 
 public class QRGenerator : MonoBehaviour
 {
+    [Header("Network")]
+    [SerializeField] private SocketIO _socketIOComponent;
+    [SerializeField] private string _socketIOChannel = "qr";
+    [SerializeField] private Token _token;
+    [SerializeField] private Canvas _trainningsCanvas;
+    [SerializeField] private ReactionUnityEvent _onSuccessReaction;
+
+    [Header("Client")]
     [SerializeField] private Rect _rect;
     [SerializeField] private Image _qrImage;
     [SerializeField] private string _preGuidCode = "sportsfun";
 
     public string Text { get; private set; }
     public Guid CurrentGuid { get; private set; }
+
+    private bool _shouldResend;
+
+    private void Awake()
+    {
+        this._shouldResend = true;
+        this.GenerateDisplayQR();
+    }
 
     private static Color32[] Encode(string textForEncoding, int width, int height)
     {
@@ -41,7 +58,36 @@ public class QRGenerator : MonoBehaviour
         this.CurrentGuid = Guid.NewGuid();
         this.Text = this._preGuidCode + ":" + this.CurrentGuid.ToString();
         this._qrImage.sprite = Sprite.Create(this.generateQR(this.Text), this._rect, Vector2.zero);
+    }
 
-        // TODO: Register GUID with the server before displaying it in case the QR Code is already in use (very low chance but whatever)
+    public void OnConnectionSocket()
+    {
+        if (this._shouldResend)
+            this._socketIOComponent.Emit(this._socketIOChannel, JObject.Parse("{ \"qr\":\"" + this.Text + "\"}"));
+    }
+
+    public void OnReconnectionSocket()
+    {
+        this._shouldResend = true;
+    }
+
+    public void OnSocketIOResponse(string channel, JObject response)
+    {
+        Debug.Log("Receive: Channel: " + channel + " Value: " + response.ToString());
+        if (channel.Equals(this._socketIOChannel))
+        {
+            Debug.Log("Socket IO Reponse : " + response.ToString());
+            //this.OnQRResponse(response)
+        }
+    }
+
+    public void OnQRResponse(string response)
+    {
+        this._token.token = response;
+        this._trainningsCanvas.gameObject.SetActive(true);
+        if (this._onSuccessReaction != null)
+            this._onSuccessReaction.React();
+        else
+            this.gameObject.SetActive(false);
     }
 }
