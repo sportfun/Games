@@ -26,19 +26,46 @@ public class InputManager : MonoBehaviour
 
     #endregion
 
-    public void OnDataReceivedHandler(string module, object data)
+    public void OnDataReceivedHandler(string channel, JObject json)
     {
-        switch (module)
+        if (channel != "data") return;
+        
+        if (json?["body"]?["value"] == null)
+        {
+            Debug.LogError($"Socket.io: received invalid data: {json}");
+            return;
+        }
+
+        Debug.Log($"Socket.io: data received: {json}");
+        switch ((string) json["body"]["module"])
         {
             case "rpm":
-                var speed = (data as JValue)?.ToObject<float>() ?? (float) data;
-                _speedChangeEvent.Invoke(Mathf.Clamp(speed, _minSpeed.Value, _maxSpeed.Value));
-                break;
             case "controller":
-                var input = (data as JValue)?.ToObject<int>() ?? (int) data;
-                if (input == _leftValue) _leftInputEvent.Invoke();
-                else if (input == _rightValue) _rightInputEvent.Invoke();
+                var module = (string) json["body"]["module"];
+                var value = json["body"]["value"];
+
+                switch (module)
+                {
+                    case "rpm":
+                        var speed = (value as JValue)?.ToObject<float>() ?? -1;
+                        _speedChangeEvent.Invoke(Mathf.Clamp(speed, _minSpeed.Value, _maxSpeed.Value));
+                        break;
+                    case "controller":
+                        var input = (value as JValue)?.ToObject<int>() ?? -1;
+                        if (input == _leftValue) _leftInputEvent.Invoke();
+                        else if (input == _rightValue) _rightInputEvent.Invoke();
+                        break;
+                }
+
+                break;
+            case null:
+                Debug.LogError("Socket.io: module not defined");
+                break;
+            default:
+                Debug.LogWarning($"Socket.io: unknown module '{json["body"]["module"]}'");
                 break;
         }
+
+        
     }
 }
