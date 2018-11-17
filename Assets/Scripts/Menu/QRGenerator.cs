@@ -10,6 +10,7 @@ public class QRGenerator : MonoBehaviour
     [Header("Network")]
     [SerializeField] private SocketIO _socketIOComponent;
     [SerializeField] private string _socketIOChannel = "qr";
+    [SerializeField] private string _tokenMessageKey = "_id";
     [SerializeField] private Token _token;
     [SerializeField] private Canvas _trainningsCanvas;
     [SerializeField] private ReactionUnityEvent _onSuccessReaction;
@@ -73,11 +74,9 @@ public class QRGenerator : MonoBehaviour
 
     public void OnSocketIOResponse(string channel, JObject response)
     {
-        Debug.Log("Receive: Channel: " + channel + " Value: " + response.ToString());
         if (channel.Equals(this._socketIOChannel))
         {
-            Debug.Log("Socket IO Reponse : " + response.ToString());
-            //this.OnQRResponse(response)
+            this.OnQRResponse(response.Value<string>(this._tokenMessageKey));
         }
     }
 
