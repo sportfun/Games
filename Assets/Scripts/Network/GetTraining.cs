@@ -8,7 +8,8 @@ using Newtonsoft;
 public class GetTraining : MonoBehaviour 
 {
 	[SerializeField] Canvas	_loginCanvas;
-	private string	_token;
+    [SerializeField] Token _token;
+	private string	_tokenParsed;
     private Dictionary<string, string>  _routes;
 	private	int _id;
     private Newtonsoft.Json.Linq.JObject    _training;
@@ -39,9 +40,9 @@ public class GetTraining : MonoBehaviour
 	public void OnEnable()
 	{
         Dictionary<string, string> getHeader = new Dictionary<string, string>();
-		this._token = this._loginCanvas.GetComponent<LauncherScript>().getToken().Split(':', '\"', '}')[15];
+		this._tokenParsed = this._token.token.Split(':', '\"', '}')[15];
         getHeader.Add("Content-Type", "application/json");
-        getHeader.Add("token", this._token);
+        getHeader.Add("token", this._tokenParsed);
         WWW www = new WWW(this._routes["server"] + this._routes["user"], null, getHeader);
         StartCoroutine(WaitForRequest(www));
     }
@@ -57,7 +58,7 @@ public class GetTraining : MonoBehaviour
             Newtonsoft.Json.Linq.JObject userDatas = Newtonsoft.Json.Linq.JObject.Parse(www.text);
             Dictionary<string, string> getHeader = new Dictionary<string, string>();
             getHeader.Add("Content-Type", "application/json");
-            getHeader.Add("token", this._token);
+            getHeader.Add("token", this._tokenParsed);
             foreach (string id in userDatas["data"]["trainings"]){
                 WWW GetTraining = new WWW(this._routes["server"] + this._routes["trainingId"] + id, null, getHeader);
                 StartCoroutine(GetOneTraining(GetTraining));

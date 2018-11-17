@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketIOComponent: {fileID: 0}
   _socketIOChannel: qr
+  _tokenMessageKey: _id
   _token: {fileID: 0}
   _trainningsCanvas: {fileID: 0}
   _onSuccessReaction: {fileID: 0}
@@ -3921,6 +3922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketIOComponent: {fileID: 567493496}
   _socketIOChannel: qr
+  _tokenMessageKey: token
   _token: {fileID: 11400000, guid: bad245c594e4e764681c7bff75df5dd1, type: 2}
   _trainningsCanvas: {fileID: 1285016865}
   _onSuccessReaction: {fileID: 312415803}
@@ -4639,6 +4641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loginCanvas: {fileID: 312415801}
+  _token: {fileID: 11400000, guid: bad245c594e4e764681c7bff75df5dd1, type: 2}
 --- !u!114 &1285016867
 MonoBehaviour:
   m_ObjectHideFlags: 0
