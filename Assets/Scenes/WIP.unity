@@ -2333,6 +2333,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c4bf912fce887834f96a4bfb443094d9, type: 2}
   m_IsPrefabParent: 0
+--- !u!223 &611279129 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 223658888193712428, guid: c4bf912fce887834f96a4bfb443094d9,
+    type: 2}
+  m_PrefabInternal: {fileID: 611279128}
 --- !u!1 &618781212
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,7 +3502,18 @@ MonoBehaviour:
   _onAwakeEvent: {fileID: 11400000, guid: 66aa29382a6afdc499104f19bf98bc00, type: 2}
   _onAvakeUnityEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 611279129}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1001 &1870753973
@@ -3641,25 +3657,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab0d8cf19d06f74ba7bf887ccfa57f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameScene: 1
   _serverUrl: http://api.sportsfun.shr.ovh:8080/
   _linkId: vroom
   _msBeforeUpdate: 0.05
-  _onDataReceivedEvent:
+  _boundChannels:
+  - data
+  - qr
+  _onReceivedEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1523080742}
-        m_MethodName: OnDataReceivedHandler
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: SocketIO+SocketIoDataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+      m_Calls: []
+    m_TypeName: SocketIO+SocketIoReceivedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   _onConnectionEvent:
     m_PersistentCalls:
       m_Calls: []
