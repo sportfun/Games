@@ -76,7 +76,8 @@ public class QRGenerator : MonoBehaviour
     {
         if (channel.Equals(this._socketIOChannel))
         {
-            this.OnQRResponse(response.Value<string>(this._tokenMessageKey));
+            Debug.Log(response.ToString());
+            this.OnQRResponse(response.Value<JObject>("token").Value<string>(this._tokenMessageKey));
         }
     }
 
