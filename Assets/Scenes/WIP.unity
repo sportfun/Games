@@ -2830,7 +2830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _server: http://api.sportsfun.shr.ovh:8080
   _time: {fileID: 890006244}
-  _GameID: 1
+  _gameChoosedID: 1
   _score: {fileID: 11400000, guid: 418eaf57f957291488cfb307e48135fa, type: 2}
 --- !u!4 &1139055563
 Transform:

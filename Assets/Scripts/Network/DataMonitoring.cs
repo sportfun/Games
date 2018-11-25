@@ -6,10 +6,12 @@ public class DataMonitoring : MonoBehaviour {
 
 	[SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private TextMeshProUGUI _time;
-    [SerializeField] private int    _GameID = 0;
+    [SerializeField] private int _gameChoosedID = 0;
+    private string    _gameID;
     [SerializeField] private IntVariable _score;
 	private string	_userRoute = "/api/user";
     private string _activityRoute = "/api/activity";
+    private string _gameIDRoute = "/api/game";
 	private Dictionary<string, string>	_keyword;
     private TrainingData _dataSaver;
     private string _token;
@@ -17,6 +19,7 @@ public class DataMonitoring : MonoBehaviour {
     void Start()
     {
         this._dataSaver =  GameObject.Find("Training Saver").GetComponent<TrainingData>() as TrainingData;
+        this.GetGameID();
     }
 
 	private WWW GetUserData()
@@ -40,6 +43,27 @@ public class DataMonitoring : MonoBehaviour {
         return www;
     }
 
+
+    private WWW GetGameID()
+    {
+        WWW www;
+        Dictionary<string, string> postHeader = new Dictionary<string, string>();
+        Newtonsoft.Json.Linq.JObject    tokenData;
+        string JsonToken;
+
+        postHeader.Add("Content-Type", "application/json");
+        JsonToken = this._dataSaver.GetToken();
+        tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
+        this._token = tokenData["data"]["token"].ToString();
+        if (this._token.Length == 0)
+        {
+            Debug.LogError("Token not found pls verify your network connection.");
+        }
+        postHeader.Add("token", this._token);
+        www = new WWW(this._server + this._gameIDRoute, null, postHeader);
+        StartCoroutine(WaitForGameID(www));
+        return www;
+    }
 
     private IEnumerator SendDataRequestReturn(WWW data)
     {
@@ -66,9 +90,11 @@ public class DataMonitoring : MonoBehaviour {
         string trainingType = "";
         string userID = "";
 
+
+  
         postHeader.Add("Content-Type", "application/json");
         postHeader.Add("token", this._token);
-        if (data.error != null)
+        if (data.error != null || this._gameID == null)
             Debug.LogError("Error during user data request. Please try again");
         else
         {
@@ -76,7 +102,9 @@ public class DataMonitoring : MonoBehaviour {
             time =  Mathf.RoundToInt(this._time.GetComponent<TimerUI>().GetTime());
             trainingType = this._dataSaver.GetChoosenTraining()["data"]["sequences"][0]["type"].ToString();
             userID = userData["data"]["_id"].ToString();
-            jsonStr = "{\"user\":\""+ userID  + "\", \"game\":" + this._GameID +", \"type\":" + trainingType + ", \"timeSpent\":" + time +  ", \"score\":" + this._score.Value + "}";
+            Debug.Log(this._gameID);
+            jsonStr = "{\"user\":\""+ userID  + "\", \"game\":\"" + this._gameID +"\", \"type\":" + trainingType + ", \"timeSpent\":" + time +  ", \"score\":" + this._score.Value + "}";
+            Debug.Log(jsonStr);
             formatData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
             www = new WWW(this._server + this._activityRoute, formatData, postHeader);
             StartCoroutine(SendDataRequestReturn(www));
@@ -98,9 +126,24 @@ public class DataMonitoring : MonoBehaviour {
         }
     }
 
+    private IEnumerator WaitForGameID(WWW data)
+    {
+        yield return data;
+        if (data.error != null)
+        {
+            Debug.Log("There was an error sending request GameID: " + data.ToString());
+        }
+        else
+        {
+            Newtonsoft.Json.Linq.JObject jsonID   = Newtonsoft.Json.Linq.JObject.Parse(data.text);
+            this._gameID = jsonID["data"][this._gameChoosedID]["_id"].ToString();
+        }
+    }
+
 	public void SendEndSessionData()
 	{
 		this.GetUserData();
+
 	}
 
 }

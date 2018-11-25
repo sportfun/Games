@@ -22,10 +22,12 @@ public class TrainingData : MonoBehaviour {
 	public void setUserData(UserData datas)
 	{
 		this._userData = datas;
+
 	}
 
 	public UserData getUserData()
 	{
 		return (this._userData);
+	
 	}
 }

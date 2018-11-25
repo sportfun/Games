@@ -9,6 +9,7 @@ public class LauncherScript : MonoBehaviour
     [SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private Token  _saveToken;
     private string  _loginRoute;
+    private string  _gameIDRoute;
     private string  _jsonData;
     private string _token;
     [SerializeField] private TMPro.TMP_InputField  _login;
@@ -20,6 +21,7 @@ public class LauncherScript : MonoBehaviour
     void Start()
     {
         this._loginRoute = "/api/user/login";
+        this._gameIDRoute = "/api/game";
         this._jsonData = "";
     }
 
@@ -39,7 +41,6 @@ public class LauncherScript : MonoBehaviour
         return www;
     }
 
-
     IEnumerator WaitForRequest(WWW data)
 {
     yield return data;
@@ -49,6 +50,8 @@ public class LauncherScript : MonoBehaviour
     }
     else
     {
+
+
         this._token = data.text;
         this._saveToken.token = data.text;
         this._trainningsCanvas.gameObject.SetActive(true);
