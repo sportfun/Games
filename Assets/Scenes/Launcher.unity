@@ -370,6 +370,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: GenerateDisplayQR
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: OnReconnectionSocket
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1165455898}
+        m_MethodName: OnConnectionSocket
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   _event:
@@ -3990,7 +4023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketIOComponent: {fileID: 567493496}
   _socketIOChannel: qr
-  _tokenMessageKey: _id
+  _tokenMessageKey: token
   _token: {fileID: 11400000, guid: bad245c594e4e764681c7bff75df5dd1, type: 2}
   _trainningsCanvas: {fileID: 1285016865}
   _onSuccessReaction: {fileID: 312415803}
