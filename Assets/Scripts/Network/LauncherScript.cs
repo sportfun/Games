@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class LauncherScript : MonoBehaviour
 {
@@ -15,7 +16,10 @@ public class LauncherScript : MonoBehaviour
     [SerializeField] private TMPro.TMP_InputField  _login;
     [SerializeField] private TMPro.TMP_InputField  _password;
     [SerializeField] private Canvas _trainningsCanvas;
+	[SerializeField] private Canvas _launcher;
     [SerializeField] private ReactionUnityEvent _onSuccessReaction;
+    [SerializeField] private TMPro.TextMeshProUGUI _errors;
+    public static bool _isLaunched = false;
 
     private Text login;
     void Start()
@@ -23,6 +27,12 @@ public class LauncherScript : MonoBehaviour
         this._loginRoute = "/api/user/login";
         this._gameIDRoute = "/api/game";
         this._jsonData = "";
+        if (_isLaunched == true)
+        {
+			Debug.Log (this._trainningsCanvas.enabled);
+			this._launcher.gameObject.SetActive(false);
+			this._trainningsCanvas.gameObject.SetActive (true);
+        }
     }
 
 
@@ -38,6 +48,7 @@ public class LauncherScript : MonoBehaviour
         var formData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
         www = new WWW(this._server + this._loginRoute, formData, postHeader);
         StartCoroutine(WaitForRequest(www));
+        this._errors.SetText("");
         return www;
     }
 
@@ -47,11 +58,12 @@ public class LauncherScript : MonoBehaviour
     if (data.error != null)
     {
         Debug.Log("There was an error sending request: " + data.error);
+        this._errors.SetText("mauvaise combinaison identifiant / mot de passe");
     }
     else
     {
 
-
+        LauncherScript._isLaunched = true;
         this._token = data.text;
         this._saveToken.token = data.text;
         this._trainningsCanvas.gameObject.SetActive(true);

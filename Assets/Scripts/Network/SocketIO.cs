@@ -180,6 +180,7 @@ public class SocketIO : MonoBehaviour
 
     private void OnReceptionHandler(string channel, object message)
     {
+        Debug.Log(message);
         lock (_receptionQueue)
         {
             _receptionQueue.Enqueue(new Tuple<string, JObject>(channel, message as JObject));
