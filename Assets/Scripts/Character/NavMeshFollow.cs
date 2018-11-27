@@ -30,6 +30,7 @@ public class NavMeshFollow : MonoBehaviour
     private void OnEnable()
     {
         this._moving = true;
+        this._agent.isStopped = false;
         this.InvokeRepeating("ChangeDestination", 0.0f, 0.5f);
     }
 

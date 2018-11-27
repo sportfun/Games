@@ -3,13 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    private void Update()
-    {
-        if (Input.GetButtonDown("Escape"))
-        {
-            this.ChangeToMainMenu();
-        }
-    }
+    // private void Update()
+    // {
+    //     if (Input.GetButtonDown("Escape"))
+    //     {
+    //         this.ChangeToMainMenu();
+    //     }
+    // }
 
     public void ChangeToMainMenu()
     {
