@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 public class DataMonitoring : MonoBehaviour {
+
 
 	[SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private TextMeshProUGUI _time;
@@ -15,11 +18,13 @@ public class DataMonitoring : MonoBehaviour {
 	private Dictionary<string, string>	_keyword;
     private TrainingData _dataSaver;
     private string _token;
+	[HideInInspector] public static bool _areDataSent = false;
 
     void Start()
     {
         this._dataSaver =  GameObject.Find("Training Saver").GetComponent<TrainingData>() as TrainingData;
         this.GetGameID();
+		_areDataSent = false;
     }
 
 	private WWW GetUserData()
@@ -50,7 +55,6 @@ public class DataMonitoring : MonoBehaviour {
         Dictionary<string, string> postHeader = new Dictionary<string, string>();
         Newtonsoft.Json.Linq.JObject    tokenData;
         string JsonToken;
-
         postHeader.Add("Content-Type", "application/json");
         JsonToken = this._dataSaver.GetToken();
         tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
@@ -76,6 +80,8 @@ public class DataMonitoring : MonoBehaviour {
         else
         {
             Debug.Log(data.text);
+			this.disconnect ();
+			_areDataSent = true;
         }
     }
     
@@ -90,8 +96,6 @@ public class DataMonitoring : MonoBehaviour {
         string trainingType = "";
         string userID = "";
 
-
-  
         postHeader.Add("Content-Type", "application/json");
         postHeader.Add("token", this._token);
         if (data.error != null || this._gameID == null)
@@ -142,8 +146,14 @@ public class DataMonitoring : MonoBehaviour {
 
 	public void SendEndSessionData()
 	{
-		this.GetUserData();
+		this.GetUserData ();
+	}
 
+	public void disconnect()
+	{
+		GameObject.DestroyImmediate (GameObject.Find ("Training Saver"));
+		LauncherScript._isLaunched = false;
+		SceneManager.LoadScene (0, LoadSceneMode.Single);
 	}
 
 }
