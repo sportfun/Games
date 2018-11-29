@@ -10,9 +10,11 @@ public class PauseInput : MonoBehaviour
             this._pauseEvent.Raise();
     }
 
+#if !UNITY_EDITOR
     private void OnApplicationPause(bool value)
     {
         if (value)
             this._pauseEvent.Raise();
     }
+#endif
 }

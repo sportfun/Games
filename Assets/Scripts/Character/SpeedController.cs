@@ -68,6 +68,11 @@ public class SpeedController : MonoBehaviour
         this._elapsedTime += Time.deltaTime;
     }
 
+    public void SetUserSpeed(float speed)
+    {
+        _userSpeedVariable.Set(speed);
+    }
+
     public void OnUserSpeedChange(float speed)
     {
         _userSpeedVariable.Set(speed);
