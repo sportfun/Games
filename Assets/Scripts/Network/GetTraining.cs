@@ -81,10 +81,10 @@ public class GetTraining : MonoBehaviour
         if (www.error == null)
         {
             this._training = Newtonsoft.Json.Linq.JObject.Parse(www.text);
-            this._loadedTrainings.Add(this._training);
-            List<TMPro.TMP_Dropdown.OptionData> item = new List<TMPro.TMP_Dropdown.OptionData>();
 			if (this._training ["data"].ToString() != "") 
 			{
+           		this._loadedTrainings.Add(this._training);
+            	List<TMPro.TMP_Dropdown.OptionData> item = new List<TMPro.TMP_Dropdown.OptionData>();
 				item.Add (new TMPro.TMP_Dropdown.OptionData ((this._training ["data"] ["description"].ToString())));
 				this._optionsDatas.AddOptions (item);
 				this._optionsDatas.RefreshShownValue ();
