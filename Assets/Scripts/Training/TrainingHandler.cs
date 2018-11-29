@@ -35,6 +35,7 @@ public class TrainingHandler : MonoBehaviour
 
     public void AcquireTraining(string jsonText)
     {
+		Debug.Log (jsonText);
         this._currentTraining = TrainingParser.ParseText(jsonText);
     }
 
