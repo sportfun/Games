@@ -7,27 +7,27 @@ using UnityEngine.SceneManagement;
 public class DataMonitoring : MonoBehaviour {
 
 
-	[SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
+    [SerializeField] private string  _server = "http://api.sportsfun.shr.ovh:8080";
     [SerializeField] private TextMeshProUGUI _time;
     [SerializeField] private int _gameChoosedID = 0;
     private string    _gameID;
     [SerializeField] private IntVariable _score;
-	private string	_userRoute = "/api/user";
+    private string	_userRoute = "/api/user";
     private string _activityRoute = "/api/activity";
     private string _gameIDRoute = "/api/game";
-	private Dictionary<string, string>	_keyword;
+    private Dictionary<string, string>	_keyword;
     private TrainingData _dataSaver;
     private string _token;
-	[HideInInspector] public static bool _areDataSent = false;
+    [HideInInspector] public static bool _areDataSent = false;
 
     void Start()
     {
         this._dataSaver =  GameObject.Find("Training Saver").GetComponent<TrainingData>() as TrainingData;
         this.GetGameID();
-		_areDataSent = false;
+        _areDataSent = false;
     }
 
-	private WWW GetUserData()
+    private WWW GetUserData()
     {
         WWW www;
         Dictionary<string, string> postHeader = new Dictionary<string, string>();
@@ -36,8 +36,13 @@ public class DataMonitoring : MonoBehaviour {
 
         postHeader.Add("Content-Type", "application/json");
         JsonToken = this._dataSaver.GetToken();
-        tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
-        this._token = tokenData["data"]["token"].ToString();
+        if (JsonToken.Contains(":") || JsonToken.Contains("\"") || JsonToken.Contains("}"))
+        {
+            tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
+            this._token = tokenData["data"]["token"].ToString();
+        }
+        else
+            this._token = JsonToken;
         if (this._token.Length == 0)
         {
             Debug.LogError("Token not found pls verify your network connection.");
@@ -57,8 +62,13 @@ public class DataMonitoring : MonoBehaviour {
         string JsonToken;
         postHeader.Add("Content-Type", "application/json");
         JsonToken = this._dataSaver.GetToken();
-        tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
-        this._token = tokenData["data"]["token"].ToString();
+        if (JsonToken.Contains(":") || JsonToken.Contains("\"") || JsonToken.Contains("}"))
+        {
+            tokenData  = Newtonsoft.Json.Linq.JObject.Parse(JsonToken);
+            this._token = tokenData["data"]["token"].ToString();
+        }
+        else
+            this._token = JsonToken;
         if (this._token.Length == 0)
         {
             Debug.LogError("Token not found pls verify your network connection.");
@@ -80,8 +90,8 @@ public class DataMonitoring : MonoBehaviour {
         else
         {
             Debug.Log(data.text);
-			this.disconnect ();
-			_areDataSent = true;
+            this.disconnect ();
+            _areDataSent = true;
         }
     }
     
@@ -96,7 +106,7 @@ public class DataMonitoring : MonoBehaviour {
         string trainingType = "";
         string userID = "";
 
-		Debug.Log ("IS LAUNCHED " + LauncherScript._isLaunched);
+        Debug.Log ("IS LAUNCHED " + LauncherScript._isLaunched);
 
         postHeader.Add("Content-Type", "application/json");
         postHeader.Add("token", this._token);
@@ -145,17 +155,25 @@ public class DataMonitoring : MonoBehaviour {
         }
     }
 
-	public void SendEndSessionData()
-	{
-		this.GetUserData ();
-	}
+    public void SendEndSessionData()
+    {
+        this.GetUserData ();
+    }
 
-	public void disconnect()
-	{
-		GameObject.DestroyImmediate (GameObject.Find ("Training Saver"));
-		Debug.Log ("oui");
-		LauncherScript._isLaunched = false;
-		SceneManager.LoadScene (0, LoadSceneMode.Single);
-	}
+    public void BackToMenu()
+    {
+        GameObject.DestroyImmediate (GameObject.Find ("Training Saver"));
+        LauncherScript._isLaunched = true;
+        SceneManager.LoadScene (0, LoadSceneMode.Single);
+
+    }
+
+    public void disconnect()
+    {
+        GameObject.DestroyImmediate (GameObject.Find ("Training Saver"));
+        Debug.Log ("oui");
+        LauncherScript._isLaunched = false;
+        SceneManager.LoadScene (0, LoadSceneMode.Single);
+    }
 
 }

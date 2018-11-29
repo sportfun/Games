@@ -27,6 +27,7 @@ public class LauncherScript : MonoBehaviour
         this._loginRoute = "/api/user/login";
         this._gameIDRoute = "/api/game";
         this._jsonData = "";
+        Debug.Log(_isLaunched);
 		if (_isLaunched == true)
         {
 			this._launcher.gameObject.SetActive(false);
