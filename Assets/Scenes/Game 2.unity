@@ -1809,6 +1809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 128857257}
   - component: {fileID: 128857258}
+  - component: {fileID: 128857259}
   m_Layer: 2
   m_Name: Disconnect Boss
   m_TagString: Untagged
@@ -1844,6 +1845,34 @@ MonoBehaviour:
   _response:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 128857259}
+        m_MethodName: React
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &128857259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 128857256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee63d302f22f58c4eaf5774d0dbdeaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBeforeReaction: 1
+  _preReactionEvent:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 722612580}
         m_MethodName: SendEndSessionData
         m_Mode: 1
@@ -1855,7 +1884,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1269313942}
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 722612580}
         m_MethodName: disconnect
         m_Mode: 1
         m_Arguments:

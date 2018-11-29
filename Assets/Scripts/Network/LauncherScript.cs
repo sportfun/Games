@@ -27,9 +27,8 @@ public class LauncherScript : MonoBehaviour
         this._loginRoute = "/api/user/login";
         this._gameIDRoute = "/api/game";
         this._jsonData = "";
-        if (_isLaunched == true)
+		if (_isLaunched == true)
         {
-			Debug.Log (this._trainningsCanvas.enabled);
 			this._launcher.gameObject.SetActive(false);
 			this._trainningsCanvas.gameObject.SetActive (true);
         }
@@ -65,6 +64,7 @@ public class LauncherScript : MonoBehaviour
 
         LauncherScript._isLaunched = true;
         this._token = data.text;
+			Debug.Log (_isLaunched);
         this._saveToken.token = data.text;
         this._trainningsCanvas.gameObject.SetActive(true);
         if (this._onSuccessReaction != null)

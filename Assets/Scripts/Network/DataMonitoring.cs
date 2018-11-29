@@ -96,6 +96,8 @@ public class DataMonitoring : MonoBehaviour {
         string trainingType = "";
         string userID = "";
 
+		Debug.Log ("IS LAUNCHED " + LauncherScript._isLaunched);
+
         postHeader.Add("Content-Type", "application/json");
         postHeader.Add("token", this._token);
         if (data.error != null || this._gameID == null)
@@ -106,7 +108,6 @@ public class DataMonitoring : MonoBehaviour {
             time =  Mathf.RoundToInt(this._time.GetComponent<TimerUI>().GetTime());
             trainingType = this._dataSaver.GetChoosenTraining()["data"]["sequences"][0]["type"].ToString();
             userID = userData["data"]["_id"].ToString();
-            Debug.Log(this._gameID);
             jsonStr = "{\"user\":\""+ userID  + "\", \"game\":\"" + this._gameID +"\", \"type\":" + trainingType + ", \"timeSpent\":" + time +  ", \"score\":" + this._score.Value + "}";
             Debug.Log(jsonStr);
             formatData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
@@ -152,6 +153,7 @@ public class DataMonitoring : MonoBehaviour {
 	public void disconnect()
 	{
 		GameObject.DestroyImmediate (GameObject.Find ("Training Saver"));
+		Debug.Log ("oui");
 		LauncherScript._isLaunched = false;
 		SceneManager.LoadScene (0, LoadSceneMode.Single);
 	}
