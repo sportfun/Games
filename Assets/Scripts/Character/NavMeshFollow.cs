@@ -59,13 +59,13 @@ public class NavMeshFollow : MonoBehaviour
                 ++this._currentTurn;
                 if (this._currentTurn > 1)
                 {
-                    if (this._currentTurn <= this._turns)
+                    // if (this._currentTurn <= this._turns)
                         this._newLapEvent.Raise();
-                    else
-                    {
-                        this.Invoke("StopMoving", 1.0f);
-                        this._endRaceEvent.Raise();
-                    }
+                    // else
+                    // {
+                    //     this.Invoke("StopMoving", 1.0f);
+                    //     this._endRaceEvent.Raise();
+                    // }
                 }
             }
             if (this._moving)

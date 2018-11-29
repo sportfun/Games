@@ -9,8 +9,8 @@ public class LapHandler : MonoBehaviour
 
     public void ChangeLapText()
     {
-        if (this._currentLapVariable.Value > this._lapCountVariable.Value)
-            this._currentLapVariable.Set(this._lapCountVariable.Value);
-        this._lapText.SetText(this._currentLapVariable.Value + "<size=60>/" + this._lapCountVariable.Value + "</size>");
+        // if (this._currentLapVariable.Value > this._lapCountVariable.Value)
+        //     this._currentLapVariable.Set(this._lapCountVariable.Value);
+        this._lapText.SetText("Tour " + this._currentLapVariable.Value);
     }
 }
