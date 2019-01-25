@@ -18,8 +18,6 @@ public class GetTraining : MonoBehaviour
     private TMPro.TMP_Dropdown _optionsDatas;
     private List<TMPro.TMP_Dropdown.OptionData> _optionsDataList;
 
-
-
     void Start()
     {
         this._loadedTrainings = new List<Newtonsoft.Json.Linq.JObject>();
@@ -62,9 +60,9 @@ public class GetTraining : MonoBehaviour
             Dictionary<string, string> getHeader = new Dictionary<string, string>();
             getHeader.Add("Content-Type", "application/json");
             getHeader.Add("token", this._tokenParsed);
-            foreach (string id in userDatas["data"]["trainings"])
+            foreach (Newtonsoft.Json.Linq.JObject id in userDatas["data"]["trainings"])
             {
-                WWW GetTraining = new WWW(this._routes["server"] + this._routes["trainingId"] + id, null, getHeader);
+                WWW GetTraining = new WWW(this._routes["server"] + this._routes["trainingId"] + id["_id"], null, getHeader);
                 StartCoroutine(GetOneTraining(GetTraining));
             }
         }

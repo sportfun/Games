@@ -90,7 +90,7 @@ public class DataMonitoring : MonoBehaviour {
         else
         {
             Debug.Log(data.text);
-            this.disconnect ();
+            // this.disconnect ();
             _areDataSent = true;
         }
     }
